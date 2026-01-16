@@ -36,14 +36,16 @@ body{
 }
 #splash img{width:120px}
 
-/* TOPO */
+/* TOPO BRANCO */
 .header{
-    background:linear-gradient(90deg,var(--vermelho),#ff6a3a);
-    padding:14px 16px;
+    background:#ffffff;
+    padding:18px 0 10px;
     display:flex;
-    align-items:center;
+    justify-content:center;
 }
-.header img{height:34px}
+.header img{
+    height:40px;
+}
 
 /* CONTAINER */
 .container{
@@ -55,12 +57,15 @@ body{
 /* TEXTO */
 .title{font-size:16px;margin-bottom:12px}
 .row{
-    display:flex;justify-content:space-between;
-    font-size:14px;padding:6px 0
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    padding:6px 0
 }
 .row strong{color:var(--vermelho)}
 .timer{
-    font-size:13px;color:var(--vermelho);
+    font-size:13px;
+    color:var(--vermelho);
     margin:10px 0 16px
 }
 
@@ -90,7 +95,10 @@ button{
     font-size:14px;
     cursor:pointer;
 }
-button:hover{background:var(--vermelho);color:#fff}
+button:hover{
+    background:var(--vermelho);
+    color:#fff;
+}
 
 button.primary{
     background:var(--vermelho);
@@ -99,14 +107,18 @@ button.primary{
     margin-top:12px;
 }
 button.primary:hover{background:var(--vermelho-escuro)}
+
 button:disabled{
-    background:#eee;color:#999;
-    border:1px solid #ddd;cursor:not-allowed
+    background:#eee;
+    color:#999;
+    border:1px solid #ddd;
+    cursor:not-allowed
 }
 
 /* LISTA */
 .instructions{
-    font-size:13px;margin:16px 0;
+    font-size:13px;
+    margin:16px 0;
     padding-left:18px
 }
 .instructions li{margin-bottom:6px}
@@ -144,7 +156,7 @@ button:disabled{
 
 <!-- TOPO -->
 <div class="header">
-    <img src="./logo.jpeg" alt="Logo">
+    <img src="./logo1.jpeg" alt="Logo">
 </div>
 
 <div class="container">
@@ -163,12 +175,13 @@ button:disabled{
 <div class="pix-box">
     <div><strong>Pix</strong></div>
 
-    <!-- QR CODE GERADO AUTOMATICAMENTE -->
+    <!-- QR CODE -->
     <div id="qrcode"></div>
 
-    <!-- CÓDIGO PIX (EDITE AQUI) -->
+    <!-- CÓDIGO PIX -->
     <pre id="codigo" style="display:none;">
-00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/0ea2eeda42e1468595673a8fa6bc3fba5204000053039865802BR5916IVI GATEWAY LTDA6009JOINVILLE62070503***6304DCB6    </pre>
+00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/e939be9c4e4b49f6b63f8e1f2944fb595204000053039865802BR5916IVI GATEWAY LTDA6009JOINVILLE62070503***630485CE
+    </pre>
 
     <button id="copiar">Copiar código Pix</button>
 </div>
@@ -193,33 +206,25 @@ button:disabled{
 
 </div>
 
-<!-- BIBLIOTECA QR CODE LOCAL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
-/* SPLASH 3s */
 window.onload = () => {
     setTimeout(()=>{
         document.getElementById("splash").style.display = "none";
     },3000);
-
     gerarQRCode();
 };
 
-/* GERAR QR CODE A PARTIR DO PIX */
 function gerarQRCode(){
     const codigoPix = document.getElementById("codigo").textContent.trim();
-    const qrDiv = document.getElementById("qrcode");
-    qrDiv.innerHTML = "";
-
-    new QRCode(qrDiv,{
+    new QRCode(document.getElementById("qrcode"),{
         text: codigoPix,
         width:220,
         height:220
     });
 }
 
-/* CONTADOR */
 let tempo = 600;
 const elTempo = document.getElementById("tempo");
 const btnCopiar = document.getElementById("copiar");
@@ -228,11 +233,7 @@ const expirado = document.getElementById("expirado");
 const intervalo = setInterval(()=>{
     const m = Math.floor(tempo/60);
     const s = tempo%60;
-
-    elTempo.textContent =
-        String(m).padStart(2,"0")+":"+
-        String(s).padStart(2,"0");
-
+    elTempo.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
     if(tempo <= 0){
         clearInterval(intervalo);
         btnCopiar.disabled = true;
@@ -241,7 +242,6 @@ const intervalo = setInterval(()=>{
     tempo--;
 },1000);
 
-/* COPIAR PIX */
 btnCopiar.onclick = () => {
     navigator.clipboard.writeText(
         document.getElementById("codigo").textContent.trim()
@@ -249,16 +249,12 @@ btnCopiar.onclick = () => {
     btnCopiar.textContent = "Código copiado";
 };
 
-/* OK → VOLTAR PARA WHATSAPP */
 document.getElementById("okBtn").onclick = () => {
     const origem = document.referrer;
-    if (origem && (origem.includes("wa.me") || origem.includes("whatsapp"))) {
-        window.location.href = origem;
-    } else {
-        window.location.href = "https://wa.me/";
-    }
+    window.location.href = origem || "https://wa.me/";
 };
 </script>
 
 </body>
 </html>
+
